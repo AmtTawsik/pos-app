@@ -87,3 +87,5 @@ const ProductList: React.FC<ProductListProps> = ({ products, onAddToCart, isLoad
     </div>
   );
 };
+
+export default ProductList

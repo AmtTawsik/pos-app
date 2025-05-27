@@ -47,3 +47,5 @@ const SearchInput: React.FC<SearchInputProps> = ({ onSearch }) => {
     </div>
   );
 };
+
+export default SearchInput
