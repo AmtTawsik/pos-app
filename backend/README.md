@@ -1,56 +1,147 @@
-# POS System Backend
+# SimplePos Backend
 
-This is the backend service for the Simple POS System built with NestJS and MongoDB.
+Robust and scalable backend for the SimplePos system, built with NestJS and MongoDB.
 
-## Description
+## ✨ Features
 
-The backend provides API endpoints for product management and sales processing.
+### 🗄️ Data Management
+- Product CRUD operations
+- Sales processing
+- Stock management
+- Search functionality
 
-## Installation
+### 🔒 Security
+- Input validation
+- Error handling
+- Data sanitization
+- Type safety
 
+### 📊 Business Logic
+- Stock verification
+- Sales calculations
+- Product search
+- Transaction management
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v16+)
+- npm (v8+)
+- MongoDB
+
+### Installation
+
+1. Install dependencies:
 ```bash
-$ npm install
+npm install
 ```
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## API Endpoints
-
-- `GET /products` – Return all products
-- `POST /products` – Create a new product
-- `GET /products/search?q=milk` – Search products by name or code
-- `PUT /products/:id` – Update a product (stock adjustment)
-- `POST /sales` – Handle checkout, reduce stock, save sale
-
-## Environment Variables
-
-Create a `.env` file in the root of the backend directory with the following variables:
-
-```
-MONGODB_URI=mongodb://localhost:27017/pos-system
+2. Configure environment:
+Create `.env` file:
+```env
+MONGODB_URI=your_mongodb_connection_string
 PORT=3000
 ```
 
-## Test
+### Development
 
+Start development server:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run start:dev
 ```
+
+### Production
+
+Build and start:
+```bash
+npm run build
+npm run start:prod
+```
+
+## 🔧 API Documentation
+
+### Products
+
+#### Get All Products
+```
+GET /products
+```
+
+#### Create Product
+```
+POST /products
+Body: {
+  "name": "string",
+  "code": "string",
+  "price": number,
+  "stockQty": number
+}
+```
+
+#### Search Products
+```
+GET /products/search?q=query
+```
+
+#### Update Product
+```
+PUT /products/:id
+Body: {
+  "name?": "string",
+  "code?": "string",
+  "price?": number,
+  "stockQty?": number
+}
+```
+
+### Sales
+
+#### Create Sale
+```
+POST /sales
+Body: {
+  "items": [{
+    "productId": "string",
+    "name": "string",
+    "price": number,
+    "quantity": number
+  }]
+}
+```
+
+#### Get All Sales
+```
+GET /sales
+```
+
+## 📦 Project Structure
+
+```
+src/
+├── products/           # Product module
+│   ├── dto/           # Data transfer objects
+│   ├── schemas/       # MongoDB schemas
+│   └── services/      # Business logic
+├── sales/             # Sales module
+│   ├── dto/
+│   ├── schemas/
+│   └── services/
+└── app.module.ts      # Main module
+```
+
+## ⚙️ Configuration
+
+### MongoDB
+- Uses Mongoose ODM
+- Schemas with timestamps
+- Indexed fields for performance
+
+### Validation
+- DTOs with class-validator
+- Schema validation
+- Error handling
+
+### Error Handling
+- Custom exceptions
+- Error transformations
+- Consistent responses
