@@ -38,3 +38,5 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount, toggleCart }) => {
     </header>
   );
 };
+
+export default Header
