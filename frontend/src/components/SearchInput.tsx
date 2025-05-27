@@ -8,24 +8,26 @@ interface SearchInputProps {
 const SearchInput: React.FC<SearchInputProps> = ({ onSearch }) => {
   const [query, setQuery] = useState('');
 
-  // Debounce search to avoid too many API calls
   useEffect(() => {
     const timer = setTimeout(() => {
-      onSearch(query);
+      onSearch(query.trim());
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [query, onSearch]);
+  }, [query]);
 
   const handleClear = () => {
     setQuery('');
-    onSearch('');
+    // No immediate call to onSearch here, debounce will handle empty query
   };
 
   return (
     <div className="relative w-full max-w-md mx-auto mb-6">
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        <Search
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          size={20}
+        />
         <input
           type="text"
           className="input pl-10 w-full"
