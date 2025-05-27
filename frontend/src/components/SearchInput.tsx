@@ -18,35 +18,32 @@ const SearchInput: React.FC<SearchInputProps> = ({ onSearch }) => {
 
   const handleClear = () => {
     setQuery('');
-    // No immediate call to onSearch here, debounce will handle empty query
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto mb-6">
+    <div className="w-full max-w-2xl mx-auto mb-8">
       <div className="relative">
         <Search
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
           size={20}
         />
         <input
           type="text"
-          className="input pl-10 w-full"
+          className="w-full pl-12 pr-10 py-3 input text-lg"
           placeholder="Search products by name or code..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
         {query && (
           <button
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
             onClick={handleClear}
             aria-label="Clear search"
           >
-            <X size={16} />
+            <X size={18} />
           </button>
         )}
       </div>
     </div>
   );
 };
-
-export default SearchInput;

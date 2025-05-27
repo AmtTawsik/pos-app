@@ -21,10 +21,8 @@ function App() {
   });
 
   const { state, addItem, clearCart } = useCart();
-
   const currentRequestId = useRef(0);
 
-  // Fetch all products, with cancellation support
   const fetchProducts = async () => {
     const requestId = ++currentRequestId.current;
     setIsLoading(true);
@@ -45,18 +43,15 @@ function App() {
     }
   };
 
-  // Initial load
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // Search with cancellation support
   const handleSearch = async (query: string) => {
     const trimmed = query.trim();
     const requestId = ++currentRequestId.current;
 
     if (!trimmed) {
-      // If clearing search, do NOT set loading if products already present
       if (products.length === 0) {
         setIsLoading(true);
       }
@@ -151,16 +146,23 @@ function App() {
         toggleCart={() => setIsCartOpen(!isCartOpen)}
       />
 
-      <main className="container mx-auto px-4 py-6 flex-1">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          Simple POS System
-        </h1>
+      <main className="container mx-auto py-8 flex-1">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">
+            Point of Sale System
+          </h1>
+          <p className="text-gray-500 text-center mb-8">
+            Manage your inventory and process sales efficiently
+          </p>
 
-        <AddProductForm onProductAdded={fetchProducts} />
-
-        <SearchInput onSearch={handleSearch} />
-
-        <ProductList products={products} onAddToCart={handleAddToCart} isLoading={isLoading} />
+          <AddProductForm onProductAdded={fetchProducts} />
+          <SearchInput onSearch={handleSearch} />
+          <ProductList 
+            products={products} 
+            onAddToCart={handleAddToCart} 
+            isLoading={isLoading} 
+          />
+        </div>
       </main>
 
       <Cart
@@ -177,15 +179,13 @@ function App() {
         />
       )}
 
-      <footer className="bg-white py-4 border-t">
-        <div className="container mx-auto px-4">
+      <footer className="bg-white py-6 border-t border-gray-100">
+        <div className="container mx-auto">
           <p className="text-center text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} Simple POS System
+            &copy; {new Date().getFullYear()} SimplePos. All rights reserved.
           </p>
         </div>
       </footer>
     </div>
   );
 }
-
-export default App;

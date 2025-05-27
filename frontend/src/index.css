@@ -5,26 +5,27 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
+  color-scheme: light;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f9fafb;
+  background-color: #f8fafc;
 }
 
 @layer components {
   .btn {
-    @apply px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-opacity-50;
+    @apply px-4 py-2.5 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-opacity-50 shadow-sm active:scale-95;
   }
   
   .btn-primary {
-    @apply bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-400;
+    @apply bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-400;
   }
   
   .btn-success {
-    @apply bg-green-500 text-white hover:bg-green-600 focus:ring-green-400;
+    @apply bg-emerald-500 text-white hover:bg-emerald-600 focus:ring-emerald-400;
   }
   
   .btn-danger {
@@ -32,6 +33,10 @@ body {
   }
   
   .input {
-    @apply px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent;
+    @apply px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent bg-white shadow-sm transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-md hover:border-gray-200;
   }
 }
