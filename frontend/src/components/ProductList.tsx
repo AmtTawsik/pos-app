@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Product } from '../types';
-import { PlusCircle, Package2 } from 'lucide-react';
+import { PlusCircle, Package2, Pencil } from 'lucide-react';
+import UpdateProductForm from './UpdateProductForm';
 
 interface ProductListProps {
   products: Product[];
@@ -9,6 +10,8 @@ interface ProductListProps {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ products, onAddToCart, isLoading }) => {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -40,52 +43,74 @@ const ProductList: React.FC<ProductListProps> = ({ products, onAddToCart, isLoad
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {products.map((product) => (
-        <div key={product._id} className="card group">
-          <div className="p-6">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="font-semibold text-lg text-gray-900 group-hover:text-indigo-600 transition-colors">
-                  {product.name}
-                </h3>
-                <p className="text-gray-500 text-sm font-medium">Code: {product.code}</p>
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <div key={product._id} className="card group">
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="font-semibold text-lg text-gray-900 group-hover:text-indigo-600 transition-colors">
+                    {product.name}
+                  </h3>
+                  <p className="text-gray-500 text-sm font-medium">Code: {product.code}</p>
+                </div>
+                <div className={`px-2.5 py-1 rounded-full text-sm font-medium ${
+                  product.stockQty > 10
+                    ? 'bg-green-50 text-green-700'
+                    : product.stockQty > 0
+                    ? 'bg-yellow-50 text-yellow-700'
+                    : 'bg-red-50 text-red-700'
+                }`}>
+                  Stock: {product.stockQty}
+                </div>
               </div>
-              <div className={`px-2.5 py-1 rounded-full text-sm font-medium ${
-                product.stockQty > 10
-                  ? 'bg-green-50 text-green-700'
-                  : product.stockQty > 0
-                  ? 'bg-yellow-50 text-yellow-700'
-                  : 'bg-red-50 text-red-700'
-              }`}>
-                Stock: {product.stockQty}
+              
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <p className="text-2xl font-bold text-gray-900">
+                    ${product.price.toFixed(2)}
+                  </p>
+                  <button
+                    onClick={() => setSelectedProduct(product)}
+                    className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                    title="Edit product"
+                  >
+                    <Pencil size={16} />
+                  </button>
+                </div>
+                <button
+                  onClick={() => onAddToCart(product)}
+                  disabled={product.stockQty <= 0}
+                  className={`
+                    flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200
+                    ${product.stockQty > 0 
+                      ? 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95'
+                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    }
+                  `}
+                >
+                  <PlusCircle size={18} />
+                  Add to Cart
+                </button>
               </div>
-            </div>
-            
-            <div className="flex justify-between items-center">
-              <p className="text-2xl font-bold text-gray-900">
-                ${product.price.toFixed(2)}
-              </p>
-              <button
-                onClick={() => onAddToCart(product)}
-                disabled={product.stockQty <= 0}
-                className={`
-                  flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200
-                  ${product.stockQty > 0 
-                    ? 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95'
-                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  }
-                `}
-              >
-                <PlusCircle size={18} />
-                Add to Cart
-              </button>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      {selectedProduct && (
+        <UpdateProductForm
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onProductUpdated={() => {
+            setSelectedProduct(null);
+            window.location.reload();
+          }}
+        />
+      )}
+    </>
   );
 };
 
-export default ProductList
+export default ProductList;
