@@ -135,4 +135,4 @@ Contributions welcome! Please read our contributing guidelines first.
 
 ## 📄 License
 
-This project is licensed under the ISC License.
+MIT © [Abdullah Al Mubin](https://github.com/AmtTawsik)

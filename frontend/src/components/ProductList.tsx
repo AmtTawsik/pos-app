@@ -46,8 +46,8 @@ const ProductList: React.FC<ProductListProps> = ({ products, onAddToCart, isLoad
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.map((product) => (
-          <div key={product._id} className="card group">
-            <div className="p-6">
+          <div key={product._id} className="card group relative">
+            <div className="p-8">
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="font-semibold text-lg text-gray-900 group-hover:text-indigo-600 transition-colors">
@@ -73,10 +73,10 @@ const ProductList: React.FC<ProductListProps> = ({ products, onAddToCart, isLoad
                   </p>
                   <button
                     onClick={() => setSelectedProduct(product)}
-                    className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                    className="p-1.5 text-gray-400 hover:text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors absolute top-1 right-1"
                     title="Edit product"
                   >
-                    <Pencil size={16} />
+                    <Pencil size={18} />
                   </button>
                 </div>
                 <button
