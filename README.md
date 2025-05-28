@@ -6,23 +6,35 @@ A professional Point of Sale (POS) system built with NestJS (backend) and React 
 
 ## ✨ Features
 
+### 🔒 Authentication & Security
+- JWT-based admin authentication
+- Protected routes and API endpoints
+- Secure password hashing
+- Token-based session management
+
 ### 🛍️ Product Management
-- Add new products with name, code, price, and stock quantity
-- Real-time product search
+- Add, edit, and search products
+- Real-time stock tracking
+- Barcode/code support
 - Stock level indicators
-- Automatic stock updates on sales
 
 ### 🛒 Shopping Cart
 - Add/remove products
 - Adjust quantities
 - Real-time total calculation
-- Smooth animations
+- Stock verification
 
 ### 💳 Sales Processing
 - Quick checkout process
-- Stock verification
-- Sale history tracking
-- Transaction management
+- Automatic stock updates
+- PDF invoice generation
+- Sales history tracking
+
+### 📊 Real-time Updates
+- Socket.io integration
+- Live stock updates
+- Instant notifications
+- Multi-device synchronization
 
 ### 🎨 Modern UI/UX
 - Responsive design
@@ -39,23 +51,18 @@ A professional Point of Sale (POS) system built with NestJS (backend) and React 
 
 ### Installation
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd simplepos
-```
-
-2. Install dependencies:
+1. Install dependencies:
 ```bash
 npm run install:all
 ```
 
-3. Configure environment variables:
+2. Configure environment variables:
 
 Backend (.env):
 ```env
 MONGODB_URI=your_mongodb_connection_string
 PORT=3000
+JWT_SECRET=your_jwt_secret_key
 ```
 
 Frontend (.env):
@@ -65,7 +72,7 @@ VITE_API_URL=http://localhost:3000
 
 ### Running the Application
 
-1. Start both services:
+Start both services:
 ```bash
 npm start
 ```
@@ -79,48 +86,56 @@ npm run start:backend
 npm run start:frontend
 ```
 
-2. Access the application:
+Access the application:
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:3000
 
 ## 💻 Usage Guide
 
-### Adding Products
-1. Click "Add New Product" button
-2. Fill in product details:
+### Authentication
+1. Access the login page
+2. Enter admin credentials
+3. System will redirect to dashboard upon successful login
+
+### Product Management
+1. Add new products with:
    - Name
-   - Code (unique identifier)
+   - Code
    - Price
    - Stock quantity
-3. Click "Add Product"
+2. Edit existing products
+3. Search by name or code
+4. Monitor stock levels
 
-### Searching Products
-- Use the search bar to find products by name or code
-- Results update in real-time as you type
+### Sales Process
+1. Add products to cart
+2. Adjust quantities
+3. Process checkout
+4. Download invoice
+5. View transaction in sales history
 
-### Managing Cart
-1. Click "Add to Cart" on any product
-2. Adjust quantities using + and - buttons
-3. Remove items using the trash icon
-4. View cart total at the bottom
-
-### Processing Sales
-1. Review items in cart
-2. Click "Checkout"
-3. Confirm the transaction
-4. Stock levels update automatically
+### Sales History
+1. View all past transactions
+2. Download PDF invoices
+3. Track sales performance
+4. Monitor inventory changes
 
 ## 🔧 API Endpoints
+
+### Authentication
+- `POST /auth/login` - Admin login
+- `GET /auth/me` - Get admin profile
 
 ### Products
 - `GET /products` - List all products
 - `POST /products` - Create product
-- `GET /products/search?q=query` - Search products
+- `GET /products/search` - Search products
 - `PUT /products/:id` - Update product
 
 ### Sales
 - `POST /sales` - Process sale
 - `GET /sales` - View sales history
+- `GET /invoices/:saleId` - Download invoice
 
 ## 📱 Responsive Design
 
@@ -129,9 +144,59 @@ SimplePos is fully responsive and works seamlessly on:
 - Tablets
 - Mobile phones
 
-## 🤝 Contributing
+## 🔌 Real-time Features
 
-Contributions welcome! Please read our contributing guidelines first.
+- Stock updates via Socket.io
+- Live inventory tracking
+- Instant notifications
+- Multi-device synchronization
+
+## 🎨 Styling
+
+### Tailwind Classes
+- `.btn` - Button styles
+- `.btn-primary` - Primary actions
+- `.btn-success` - Success actions
+- `.btn-danger` - Dangerous actions
+- `.input` - Form inputs
+- `.card` - Product cards
+
+### Customization
+Edit `tailwind.config.js` to modify:
+- Colors
+- Typography
+- Spacing
+- Animations
+- Breakpoints
+
+## 📦 Project Structure
+
+```
+.
+├── backend/                 # NestJS backend
+│   ├── src/
+│   │   ├── auth/           # Authentication
+│   │   ├── products/       # Product management
+│   │   └── sales/          # Sales processing
+│   └── package.json
+│
+└── frontend/               # React frontend
+    ├── src/
+    │   ├── components/     # React components
+    │   ├── contexts/       # Context providers
+    │   ├── services/       # API services
+    │   └── types/         # TypeScript types
+    └── package.json
+```
+
+## 🔧 Development Tools
+
+- Vite for fast development
+- ESLint for code quality
+- TypeScript for type safety
+- Prettier for formatting
+- Socket.io for real-time features
+- JWT for authentication
 
 ## 📄 License
 
