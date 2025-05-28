@@ -1,6 +1,8 @@
+// src/App.tsx
+
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { socket } from './services/api';
 import Header from './components/Header';
 import LoginForm from './components/LoginForm';
@@ -15,12 +17,13 @@ import { getProducts, searchProducts, createSale } from './services/api';
 import { Product } from './types';
 import toast from 'react-hot-toast';
 
-const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+// PrivateRoute component to protect authenticated routes
+const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
 
-function App() {
+const MainApp: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const [products, setProducts] = React.useState<Product[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -38,8 +41,8 @@ function App() {
     if (isAuthenticated) {
       socket.connect();
       socket.on('stockUpdated', (updatedProduct: Product) => {
-        setProducts(prevProducts =>
-          prevProducts.map(product =>
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
             product._id === updatedProduct._id ? updatedProduct : product
           )
         );
@@ -168,82 +171,82 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        {isAuthenticated && (
-          <Header
-            cartItemCount={state.items.reduce((sum, item) => sum + item.quantity, 0)}
-            toggleCart={() => setIsCartOpen(!isCartOpen)}
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Header
+        cartItemCount={state.items.reduce((sum, item) => sum + item.quantity, 0)}
+        toggleCart={() => setIsCartOpen(!isCartOpen)}
+      />
+
+      <Routes>
+        <Route path="/login" element={<LoginForm />} />
+        <Route
+          path="/"
+          element={
+            <main className="container mx-auto py-8 flex-1">
+              <div className="max-w-7xl mx-auto">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">
+                  Point of Sale System
+                </h1>
+                <p className="text-gray-500 text-center mb-8">
+                  Manage your inventory and process sales efficiently
+                </p>
+
+                <AddProductForm onProductAdded={fetchProducts} />
+                <SearchInput onSearch={handleSearch} />
+                <ProductList
+                  products={products}
+                  onAddToCart={handleAddToCart}
+                  isLoading={isLoading}
+                />
+              </div>
+            </main>
+          }
+        />
+        <Route
+          path="/sales"
+          element={
+            <PrivateRoute>
+              <main className="container mx-auto py-8 flex-1">
+                <SalesHistory />
+              </main>
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+
+      <>
+        <Cart
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          onCheckout={handleCheckout}
+        />
+        {checkoutStatus.show && (
+          <CheckoutResult
+            success={checkoutStatus.success}
+            message={checkoutStatus.message}
+            onClose={closeCheckoutResult}
           />
         )}
+      </>
 
-        <Routes>
-          <Route path="/login" element={!isAuthenticated ? <LoginForm /> : <Navigate to="/" />} />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <main className="container mx-auto py-8 flex-1">
-                  <div className="max-w-7xl mx-auto">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">
-                      Point of Sale System
-                    </h1>
-                    <p className="text-gray-500 text-center mb-8">
-                      Manage your inventory and process sales efficiently
-                    </p>
-
-                    <AddProductForm onProductAdded={fetchProducts} />
-                    <SearchInput onSearch={handleSearch} />
-                    <ProductList
-                      products={products}
-                      onAddToCart={handleAddToCart}
-                      isLoading={isLoading}
-                    />
-                  </div>
-                </main>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/sales"
-            element={
-              <PrivateRoute>
-                <main className="container mx-auto py-8 flex-1">
-                  <SalesHistory />
-                </main>
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-
-        {isAuthenticated && (
-          <>
-            <Cart
-              isOpen={isCartOpen}
-              onClose={() => setIsCartOpen(false)}
-              onCheckout={handleCheckout}
-            />
-
-            {checkoutStatus.show && (
-              <CheckoutResult
-                success={checkoutStatus.success}
-                message={checkoutStatus.message}
-                onClose={closeCheckoutResult}
-              />
-            )}
-          </>
-        )}
-
-        <footer className="bg-white py-6 border-t border-gray-100">
-          <div className="container mx-auto">
-            <p className="text-center text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} SimplePos. All rights reserved.
-            </p>
-          </div>
-        </footer>
-      </div>
-    </Router>
+      <footer className="bg-white py-6 border-t border-gray-100">
+        <div className="container mx-auto">
+          <p className="text-center text-gray-500 text-sm">
+            &copy; {new Date().getFullYear()} SimplePos. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
   );
-}
+};
+
+// Wrap the app with AuthProvider
+const App: React.FC = () => (
+  <AuthProvider>
+    <Router>
+      <MainApp />
+    </Router>
+  </AuthProvider>
+);
 
 export default App;

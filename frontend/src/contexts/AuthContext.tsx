@@ -1,3 +1,5 @@
+// src/contexts/AuthContext.tsx
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { login as apiLogin, getAdminProfile } from '../services/api';
@@ -12,23 +14,27 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Initialize from localStorage on first render
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      return decoded.exp && decoded.exp > currentTime;
+    } catch {
+      return false;
+    }
+  });
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decoded = jwtDecode(token);
-      const currentTime = Date.now() / 1000;
-      
-      if (decoded.exp && decoded.exp > currentTime) {
-        setIsAuthenticated(true);
-        fetchUserProfile();
-      } else {
-        localStorage.removeItem('token');
-      }
+    if (isAuthenticated) {
+      fetchUserProfile();
     }
-  }, []);
+  }, [isAuthenticated]);
 
   const fetchUserProfile = async () => {
     try {

@@ -11,14 +11,15 @@
   },
   "dependencies": {
     "axios": "^1.6.2",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^5.0.2",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.511.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
-    "socket.io-client": "^4.7.2",
-    "jspdf": "^2.5.1",
-    "jwt-decode": "^4.0.0",
-    "react-router-dom": "^6.21.1"
+    "react-router-dom": "^6.21.1",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.5",
