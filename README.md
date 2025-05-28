@@ -1,5 +1,8 @@
 # SimplePos - Modern Point of Sale System
 
+### Admin Login
+(email: admin@gmail.com || password: admin@123)
+
 A professional Point of Sale (POS) system built with NestJS (backend) and React (frontend), featuring a modern UI and robust functionality.
 
 ![SimplePos Screenshot](https://images.pexels.com/photos/7621138/pexels-photo-7621138.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)
@@ -94,7 +97,7 @@ Access the application:
 
 ### Authentication
 1. Access the login page
-2. Enter admin credentials
+2. Enter admin credentials (email: admin@gmail.com || password: admin@123)
 3. System will redirect to dashboard upon successful login
 
 ### Product Management
